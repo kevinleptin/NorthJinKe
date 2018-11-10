@@ -36,10 +36,10 @@ namespace NorthJinKe.Controllers.api
 
             //get the file downloader 
             byte[] armFileData = await _fileDownloaderService.DownloadWxFileAsync(id);
-            string absAmrFilePath = await _fileDownloaderService.SaveFile(_hostingEnvironmentService.AppMapPath("~/uploads/"), armFileData);    
-            
+            string absAmrFilePath = await _fileDownloaderService.SaveFileAsync(_hostingEnvironmentService.AppMapPath("~/uploads/"), armFileData);
+
             //get the converter
-            string absMp3FilePath = await _audioFileService.ConvertAmr2Mp3(absAmrFilePath);
+            string absMp3FilePath = await _audioFileService.ConvertAmr2Mp3Async(absAmrFilePath);
 
             //return the access path to user
             string relFilePath = absMp3FilePath.Replace(_hostingEnvironmentService.AppPhysicalPath(), string.Empty);

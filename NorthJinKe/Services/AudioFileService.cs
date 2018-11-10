@@ -13,12 +13,12 @@ namespace NorthJinKe.Services
         /// </summary>
         /// <param name="amrFilePath">amr file absolute path</param>
         /// <returns>the absolute file path of mp3 file</returns>
-        Task<string> ConvertAmr2Mp3(string amrFilePath);
+        Task<string> ConvertAmr2Mp3Async(string amrFilePath);
     }
 
     public class AudioFileService : IAudioFileService
     {
-        public async Task<string> ConvertAmr2Mp3(string amrFilePath)
+        public async Task<string> ConvertAmr2Mp3Async(string amrFilePath)
         {
             throw  new NotImplementedException();
         }
