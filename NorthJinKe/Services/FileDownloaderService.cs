@@ -55,8 +55,8 @@ namespace NorthJinKe.Services
             string fileName = Guid.NewGuid().ToString()+".amr";
             string fullFilePath = Path.Combine(fileFolderPath, fileName);
             
-            //todo: async
-                File.WriteAllBytes(fullFilePath, fileData);
+            await Task.Factory.StartNew(() => { File.WriteAllBytes(fullFilePath, fileData); });
+                
             
             return fullFilePath;
         }
