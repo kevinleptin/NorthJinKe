@@ -1,0 +1,81 @@
+﻿@model NorthJinKe.Models.ViewModels.WxDemoAudioViewModel
+@{
+    ViewBag.Title = "Audio";
+}
+<style type="text/css">
+    div.row{
+        margin: 6px auto;
+        text-align: center;
+    }
+</style>
+
+<h2>Audio</h2>
+<div class="container">
+    <div class="row">
+        <span>LocalID: </span> <span id="txtLocalId"></span>
+    </div>
+    <div class="row">
+        <span>ServerID: </span> <span id="txtServerId"></span>
+    </div>
+    <div class="row">
+        <button id="btnRecord" class="btn btn-info">
+            Start Record
+        </button>
+    </div>
+
+    <div class="row">
+        <button id="btnRecordStop" class="btn btn-danger">
+            Stop Record
+        </button>
+
+    </div>
+
+    <div class="row">
+        <button id="btnRecordUpload" class="btn btn-danger">
+            Upload
+        </button>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script type="text/javascript">
+        var localId = 0;
+        var serverId = 0;
+        wx.config({
+            debug: false,
+            appId: "@Model.AppId",
+            timestamp: @Model.TimeStamp, // 必填，生成签名的时间戳
+            nonceStr: "@Model.NonceStr", // 必填，生成签名的随机串
+            signature: "@Model.Signature",// 必填，签名
+            jsApiList: ['startRecord', 'stopRecord', 'uploadVoice'] // 必填，需要使用的JS接口列表
+        });
+
+        $('#btnRecord').click(function() {
+            wx.startRecord();
+        });
+
+        $('#btnRecordStop').click(function() {
+            wx.stopRecord({
+                success: function(res) {
+                    localId = res.localId;
+                    $('#txtLocalId').html(localId);
+                }
+            })
+        });
+
+        $('#btnRecordUpload').click(function() {
+            wx.uploadVoice({
+                localId: localId,
+                isShowProgressTips: 1,
+                success: function(res) {
+                    serverId = res.serverId;
+                    $('#txtServerId').html(serverId);
+                }
+            })
+        });
+
+
+    </script>
+}

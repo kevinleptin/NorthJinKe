@@ -26,8 +26,8 @@ namespace NorthJinKe.Tests.Controllers.api
             _hostEnvironmentService.Setup(c => c.AppPhysicalPath()).Returns(@"c:\");
 
             var controller = new WxFileController(_fileDownloaderService.Object, 
-                                                   null,
-                                                    //_audioFileService.Object, 
+                                                   //null,
+                                                    _audioFileService.Object, 
                                                     _hostEnvironmentService.Object);
 
             var result = await controller.ConvertAsync("1") as OkNegotiatedContentResult<string>;
