@@ -26,7 +26,7 @@ namespace NorthJinKe.Controllers
             vm.AppId = appId;
             vm.NonceStr = JSSDKHelper.GetNoncestr();
             vm.TimeStamp = JSSDKHelper.GetTimestamp();
-            string ticket = JsApiTicketContainer.TryGetJsApiTicket(appId, appSecret, true);
+            string ticket = JsApiTicketContainer.TryGetJsApiTicket(appId, appSecret);
             string url = System.Web.HttpContext.Current.Request.Url.AbsoluteUri.ToString();
             vm.Signature = JSSDKHelper.GetSignature(ticket, vm.NonceStr, vm.TimeStamp, url);
 

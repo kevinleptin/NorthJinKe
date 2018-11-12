@@ -27,8 +27,8 @@ namespace NorthJinKe.Services
     {
         public async Task<byte[]> DownloadWxFileAsync(string id)
         {
-            string appId = ConfigurationManager.AppSettings["wxAppId"];
-            string appSecret = ConfigurationManager.AppSettings["wxAppSecret"];
+            string appId = ConfigurationManager.AppSettings["appId"];
+            string appSecret = ConfigurationManager.AppSettings["appSecret"];
             string tokenUrl = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}",
                                         appId, appSecret);
             HttpClient client = new HttpClient();
@@ -36,7 +36,6 @@ namespace NorthJinKe.Services
             var tokenEntity = await client.GetStringAsync(tokenUrl).ContinueWith(c => JsonConvert.DeserializeObject<AccessTokenRespEntity>(c.Result));
 
             string accessToken = tokenEntity.Access_Token;
-
             string mediaUrl = string.Format("https://api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}",
                                             accessToken,
                                             id);
@@ -47,7 +46,7 @@ namespace NorthJinKe.Services
 
         public async Task<string> SaveFileAsync(string rootFolderPath, byte[] fileData)
         {
-            string fileFolderPath = Path.Combine(rootFolderPath, DateTime.Now.ToString("YYYY"), DateTime.Now.ToString("MM-dd"));
+            string fileFolderPath = Path.Combine(rootFolderPath, DateTime.Now.ToString("yyyy"), DateTime.Now.ToString("MM-dd"));
             if (!Directory.Exists(fileFolderPath))
             {
                 Directory.CreateDirectory(fileFolderPath);

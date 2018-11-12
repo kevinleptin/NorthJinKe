@@ -18,6 +18,9 @@
         <span>ServerID: </span> <span id="txtServerId"></span>
     </div>
     <div class="row">
+        <span>Mp3 Url:</span> <span id="txtLink"></span>
+    </div>
+    <div class="row">
         <button id="btnRecord" class="btn btn-info">
             Start Record
         </button>
@@ -33,6 +36,12 @@
     <div class="row">
         <button id="btnRecordUpload" class="btn btn-danger">
             Upload
+        </button>
+    </div>
+
+    <div class="row">
+        <button id="btnConvert" class="btn btn-danger">
+            Convert
         </button>
     </div>
 </div>
@@ -65,15 +74,28 @@
             })
         });
 
-        $('#btnRecordUpload').click(function() {
-            wx.uploadVoice({
-                localId: localId,
-                isShowProgressTips: 1,
-                success: function(res) {
-                    serverId = res.serverId;
-                    $('#txtServerId').html(serverId);
-                }
-            })
+        $('#btnRecordUpload').click(function () {
+            if (localId) {
+                wx.uploadVoice({
+                    localId: localId,
+                    isShowProgressTips: 1,
+                    success: function (res) {
+                        serverId = res.serverId;
+                        $('#txtServerId').html(serverId);
+                    }
+                })
+            }
+        });
+
+        $('#btnConvert').click(function () {
+            if (serverId) {
+                $.post({
+                    url: '/api/wxfile/convert/' + serverId,
+                    success: function (data) {
+                        $('#txtLink').html('<a href="' + data + '">' + data + '</a>');
+                    }
+                })
+            }
         });
 
 

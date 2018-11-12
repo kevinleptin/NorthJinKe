@@ -28,20 +28,22 @@ namespace NorthJinKe.Services
                 string inputFileFullPath = amrFilePath;
                 string inputFileName = Path.GetFileNameWithoutExtension(amrFilePath);
                 string inputFileFolderPath = Path.GetDirectoryName(amrFilePath);
-                string outputFileFullPath = Path.Combine(inputFileFolderPath, inputFileName, ".mp3");
+                string outputFileFullPath = Path.Combine(inputFileFolderPath, inputFileName + ".mp3");
                 ProcessStartInfo psi = new ProcessStartInfo();
                 psi.CreateNoWindow = true;
                 psi.RedirectStandardOutput = true;
                 psi.RedirectStandardError = true;
+
                 psi.FileName = toolPath;
-                psi.Arguments = "-i "+inputFileFullPath+" "+outputFileFullPath;
+                psi.Arguments = "-i " + inputFileFullPath + " " + outputFileFullPath;
                 psi.UseShellExecute = false;
                 Process proc = Process.Start(psi);
-                
+
                 proc.WaitForExit(3000);
-                return proc.StandardOutput.ReadToEnd();
+                return outputFileFullPath;
+
             });
-            
+
             return result;
         }
     }

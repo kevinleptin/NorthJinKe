@@ -25,6 +25,13 @@ namespace NorthJinKe.Controllers.api
             _hostingEnvironmentService = hostingEnvironmentService ?? new HostingEnvironmentService();
         }
 
+        public WxFileController()
+        {
+            _fileDownloaderService = new FileDownloaderService();
+            _audioFileService = new AudioFileService();
+            _hostingEnvironmentService = new HostingEnvironmentService();
+        }
+
         [HttpPost, Route("api/wxfile/convert/{id}")]
         public async Task<IHttpActionResult> ConvertAsync(string id)
         {
@@ -40,9 +47,14 @@ namespace NorthJinKe.Controllers.api
 
             //get the converter
             string absMp3FilePath = await _audioFileService.ConvertAmr2Mp3Async(absAmrFilePath);
-
+            
             //return the access path to user
             string relFilePath = absMp3FilePath.Replace(_hostingEnvironmentService.AppPhysicalPath(), string.Empty);
+            if(relFilePath.StartsWith("\\") == false)
+            {
+                relFilePath = "\\" + relFilePath;
+            }
+            relFilePath = relFilePath.Replace("\\", "/");
             return Ok(relFilePath);
         }
     }
