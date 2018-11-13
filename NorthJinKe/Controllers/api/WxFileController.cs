@@ -32,6 +32,11 @@ namespace NorthJinKe.Controllers.api
             _hostingEnvironmentService = new HostingEnvironmentService();
         }
 
+        public string Options()
+        {
+            return null;
+        }
+
         [HttpPost, Route("api/wxfile/convert/{id}")]
         public async Task<IHttpActionResult> ConvertAsync(string id)
         {
