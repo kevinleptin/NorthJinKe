@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Http;
+using Newtonsoft.Json;
+using NorthJinKe.Models.dto;
 using NorthJinKe.Services;
 
 namespace NorthJinKe.Controllers.api
@@ -61,6 +64,18 @@ namespace NorthJinKe.Controllers.api
             }
             relFilePath = relFilePath.Replace("\\", "/");
             return Ok(relFilePath);
+        }
+
+        [HttpPost, Route("api/baiduai/gesture")]
+        public async Task<IHttpActionResult> GestureAsync(GestureDto dto)
+        {
+            string baiduUrlFmt = @"https://aip.baidubce.com/rest/2.0/image-classify/v1/gesture?access_token={0}";
+            string baiduToken = ConfigurationManager.AppSettings["baiduAIToken"];
+            string requestUrl = string.Format(baiduUrlFmt, baiduToken);
+            HttpClient client = new HttpClient();
+            //todo: access_token 应该放到一个独立，定时刷新的地方存取
+            var resultJsonStr = await client.GetStringAsync(requestUrl); //.ContinueWith(c => JsonConvert.DeserializeObject<AccessTokenRespEntity>(c.Result));
+            return Ok(JsonConvert.DeserializeObject(resultJsonStr));
         }
     }
 }
