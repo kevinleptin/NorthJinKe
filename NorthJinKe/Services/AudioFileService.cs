@@ -35,7 +35,7 @@ namespace NorthJinKe.Services
                 psi.RedirectStandardError = true;
 
                 psi.FileName = toolPath;
-                psi.Arguments = "-i " + inputFileFullPath + " " + outputFileFullPath;
+                psi.Arguments = "-i " + inputFileFullPath + " -af \"volume=16\" " + outputFileFullPath;
                 psi.UseShellExecute = false;
                 Process proc = Process.Start(psi);
 

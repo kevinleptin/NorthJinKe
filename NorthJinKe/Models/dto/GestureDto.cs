@@ -7,6 +7,6 @@ namespace NorthJinKe.Models.dto
 {
     public class GestureDto
     {
-        public string Image { get; set; }
+        public string image { get; set; }
     }
 }

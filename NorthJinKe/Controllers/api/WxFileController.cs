@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using Newtonsoft.Json;
@@ -74,8 +75,15 @@ namespace NorthJinKe.Controllers.api
             string requestUrl = string.Format(baiduUrlFmt, baiduToken);
             HttpClient client = new HttpClient();
             //todo: access_token 应该放到一个独立，定时刷新的地方存取
-            var resultJsonStr = await client.GetStringAsync(requestUrl); //.ContinueWith(c => JsonConvert.DeserializeObject<AccessTokenRespEntity>(c.Result));
+            var dict = new Dictionary<string, string>();
+            dict.Add("image", dto.image);
+            var stringContent = new StringContent("image=" + HttpUtility.UrlEncode(dto.image), System.Text.Encoding.UTF8, "application/x-www-form-urlencoded");
+
+
+            var response = await client.PostAsync(requestUrl, stringContent);
+            var resultJsonStr = await response.Content.ReadAsStringAsync();
             return Ok(JsonConvert.DeserializeObject(resultJsonStr));
+
         }
     }
 }
